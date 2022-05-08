@@ -1,0 +1,73 @@
+$purple: #6133ac;
+$dark: #000;
+
+@font-face {
+  font-family: "kaiyako2";
+  /*a name to be used later*/
+  src: url("../../page-kaiyako/Kaiyako05-Regular.otf");
+  /*URL to font*/
+}
+body {
+  background-color: $purple;
+  text-align: center;
+  color: white;
+}
+main{
+  display: flex;
+  justify-content: center;
+}
+.terminal-box{
+  background-color: $dark;
+  border: 3px solid yellow;
+  width: 800px;
+  margin: 100px;
+  .top{
+    border: 1px solid $dark;
+    text-align: left;
+    font-family: monospace;
+  }
+}
+main textarea {
+  padding: 1px;
+  margin-top: -2px;
+  border: 0px solid red;
+  font-family: monospace;
+  background-color: #222;
+  width: 100%;
+  resize: none;
+  &:focus{
+    border: none;
+    border-radius: 0;outline: none !important;
+    // border:1px solid #999;
+    border: none;
+  }
+}
+.terminal-box{
+  width: 800px;
+}
+
+.right {
+  background-color: #000;
+  min-height: 5px;
+}
+
+.interface .left, .interface .right {
+  min-height: 90vh;
+  padding: 20px;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+#output span {
+  border-radius: 5px;
+  padding: 2px;
+  background-color: #555;
+}
+#output .noun {
+  background-color: #55e;
+}
+#output .word {
+  background-color: #888;
+}
+
+/*# sourceMappingURL=main.css.map */
