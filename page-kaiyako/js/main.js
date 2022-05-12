@@ -10,7 +10,7 @@ const myCode = [
   ["o", "eh"],
   ["p", "r"],
   ["[", "b"],
-  ["]", "0"],
+  ["]", "bwa"],
   ["a", "m"],
   ["s", "ktl"],
   ["d", "s"],
@@ -30,6 +30,7 @@ const myCode = [
   ["n", "th"],
   ["m", "w"],
   [".", "uh"],
+  [",", "sh"],
   ["/", "."],
   [" ", "ERRORNOSPACESACCEPTED"]
 ]
@@ -41,19 +42,17 @@ let loopCount = 0;
 function count(){
   loopCount++;
 }
+let decodeToggler = true;
 //-----TEMP
 
 window.onload = function(){
+  //
+  $("#input").append("qwer\ntyui ")
+  //
+  decodeToggler = document.getElementById("decode-toggler").checked;
   textAreaInput = $("#input").val();
-  print(decode($("#input").val()));
+  hasChanged();
   setInterval(loop, 200);
-  function loop2(){
-    //-----WIP-----
-    // if(currentWord.charAt(currentWord.length) !== $("#input").val()){
-    //
-    // }
-    //-----WIP-----
-  }
   document.body.onkeypress= function(e){
     if(e.keyCode == 32){
       decode("eocf jz n. mpc;");
@@ -64,40 +63,36 @@ window.onload = function(){
 function loop(){
   if(textAreaInput !== $("#input").val()){
     textAreaInput = $("#input").val();
-    hasChanged("textarea");
+    hasChanged();
   }else if(decodeToggler !== document.getElementById("decode-toggler").checked){
     hasChanged()
     decodeToggler = document.getElementById("decode-toggler").checked;
   }
 
 }
+
 //-----WIP-----
 function hasChanged(){
   lastChar = textAreaInput.charAt(textAreaInput.length - 1);
   if(document.getElementById("decode-toggler").checked){
-    print(decode($("#input").val()));
+    printToPage(decode($("#input").val()));
 
   }
-  log(`loop ${loopCount}`, "s");
+  // log(`loop ${loopCount}`, "s");
 }
 //-----/WIP-----
 
 function decode(input){
   // log(`decoding '${input}'`, "t")
-  let words = [];
   let output = [];
+  //---delete this I think
   let presWord = 0;
+  //---delete this I think
+
 
   //-----Put words into an array
-  for(let i=0; i<input.length; i++){
-    count();
-    if(words[presWord] == undefined){words[presWord] = ""}
-    if(input.charAt(i) !== " "){
-      words[presWord] += input.charAt(i);
-    }else{
-      presWord++
-    }
-  }
+  const words = separateWords(input);
+
   // log(`Arrayed words is`, "s");
   // log(words, "s");
 
@@ -105,13 +100,20 @@ function decode(input){
   //-----Translate words
   for(let i=0; i<words.length; i++){
     count();
-    let myWord = findMatch(words[i]);
-    if(myWord === null){
-      //-----if there is no match in the word bank
-      myWord = decodeWord(words[i]);
-      output.push([words[i], myWord]);
+    if(words[i] === "\n"){
+      // log("newline")
+      output.push(["\n", "<br>"])
+    }else if(words[i] === " "){
+      output.push([words[i], ""]);
     }else{
-      output.push([words[i], myWord[1], myWord[2]]);
+      let myWord = findMatch(words[i]);
+      if(myWord === null){
+        //-----if there is no match in the word bank
+        myWord = decodeWord(words[i]);
+        output.push([words[i], myWord, "word"]);
+      }else{
+        output.push([words[i], myWord[1], myWord[2]]);
+      }
     }
   }
 
@@ -122,10 +124,38 @@ function decode(input){
   //-----/WIP-----
 
 }
-
 //-----WIP-----
+let temp
+let string = "123"
+function separateWords(input){
+  let output = [];
+  let presWord = 0;
+  for(let i=0; i<input.length; i++){
+    count();
+    if(output[presWord] == undefined){output[presWord] = ""}
+    if(input.charAt(i) === " "){
+      presWord++
+      output[presWord] = input.charAt(i);
+      presWord++
+    }else if(input.charAt(i) === "\n"){
+      presWord++
+      output[presWord] = input.charAt(i);
+      presWord++
+    }else{
+      output[presWord] += input.charAt(i);
+    }
+  }
+
+
+  // console.log(output)
+  return output
+}
+// separateWords("one\ntwo three")
+
 function findMatch(input, type){
-  if(input === undefined){input = "DEFAULT";log(`input of decodeWord is undefined`)}
+  // log(`finding match for ${input}`)
+  // temp = input;
+  if(input === undefined){input = "DEFAULT";log(`input of findMatch is undefined`)}
   if(type == "k-e" || type == undefined){
     //if kaiyako to english
     let hasMatch = false;
@@ -146,6 +176,11 @@ function findMatch(input, type){
 function decodeWord(input, type){
   if(input === undefined){input = "DEFAULT";log(`input of decodeWord is undefined`)}
   let output = "";
+  say(`decoding '${input}'`)
+  if(input === " "){
+    say(`output is '${output}'`)
+    return "";
+  }
   if(type == "k-e" || type == undefined){
     for(let i=0; i<input.length; i++){
       count();
@@ -165,21 +200,23 @@ function decodeWord(input, type){
   }
   return output;
 }
-function print(input){
+function printToPage(input){
   log(`Tying to print`, "t")
   log(input, "s")
   let output = "";
   for(let i=0; i<input.length; i++){
+    // console.info(`printing ${input[i][0]}`)
+
     count();
     if(input[i][2] !== undefined){
-      output += `<span class="${input[i][2]}">${input[i][1]}</span> `;
+      output += `<span class="${input[i][2]}">${input[i][1]}</span>`;
     }else{
-      output += `${input[i][1]} `;
+      output += input[i][1];
     }
 
   }
+  say(output)
   $("#output").empty();
-  log(`Output is ${output}`);
   $("#output").html(output);
 }
 
@@ -198,4 +235,10 @@ function log(input, type){
     console.log(input);
   }
 
+}
+function say(input){
+  input = JSON.stringify(input)
+  input = input.substring(1);
+  input = input.substring(0, input.length - 1);
+  console.log(input);
 }
