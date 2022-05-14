@@ -2,6 +2,10 @@
   font-family: 'kaiyako2'; /*a name to be used later*/
   src: url('../Kaiyako05-Regular.otf'); /*URL to font*/
 }
+@font-face{
+  font-family: 'kaiyako3'; /*a name to be used later*/
+  src: url('../Kaiyako06.otf'); /*URL to font*/
+}
 
 $purple: #6133ac;
 
@@ -12,7 +16,7 @@ body{
 }
 main{
   textarea{
-    font-family: "kaiyako2", fantasy;
+    font-family: "kaiyako3", fantasy;
     background-color: #000;
     width: 95%;
     max-width: 95%;
@@ -32,6 +36,7 @@ main{
   }
 }
 #output{
+  text-align: left;
   span{
     border-radius: 5px;
     padding: 2px;
@@ -41,6 +46,6 @@ main{
     background-color: #55e;
   }
   .word{
-    background-color: #888;
+    background-color: #86a;
   }
 }

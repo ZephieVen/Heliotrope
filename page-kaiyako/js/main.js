@@ -37,17 +37,15 @@ const myCode = [
 let changeDetector;
 let textAreaInput = "";
 let currentWord;
-//-----TEMP
 let loopCount = 0;
 function count(){
   loopCount++;
 }
 let decodeToggler = true;
-//-----TEMP
 
 window.onload = function(){
   //
-  $("#input").append("qwer\ntyui ")
+  // $("#input").append("qwer\ntyui ")
   //
   decodeToggler = document.getElementById("decode-toggler").checked;
   textAreaInput = $("#input").val();
@@ -68,63 +66,50 @@ function loop(){
     hasChanged()
     decodeToggler = document.getElementById("decode-toggler").checked;
   }
-
 }
 
-//-----WIP-----
 function hasChanged(){
   lastChar = textAreaInput.charAt(textAreaInput.length - 1);
   if(document.getElementById("decode-toggler").checked){
     printToPage(decode($("#input").val()));
-
   }
-  // log(`loop ${loopCount}`, "s");
 }
-//-----/WIP-----
 
 function decode(input){
-  // log(`decoding '${input}'`, "t")
   let output = [];
-  //---delete this I think
-  let presWord = 0;
-  //---delete this I think
-
-
   //-----Put words into an array
   const words = separateWords(input);
 
-  // log(`Arrayed words is`, "s");
-  // log(words, "s");
-
-  //-----WIP-----
   //-----Translate words
   for(let i=0; i<words.length; i++){
     count();
     if(words[i] === "\n"){
-      // log("newline")
       output.push(["\n", "<br>"])
     }else if(words[i] === " "){
-      output.push([words[i], ""]);
+      output.push([words[i], " "]);
+    }else if(words[i] === "/"){
+      output.push([words[i], "."]);
+    }else if(words[i] === "`"){
+      output.push([words[i], "&emsp;"])
+      console.log(output[output.length-1])
     }else{
       let myWord = findMatch(words[i]);
       if(myWord === null){
         //-----if there is no match in the word bank
         myWord = decodeWord(words[i]);
-        output.push([words[i], myWord, "word"]);
+        output.push([words[i], myWord, ""]);
       }else{
         output.push([words[i], myWord[1], myWord[2]]);
       }
     }
   }
 
-
-  // log(`Output is`, "t");
-  // log(output, "s");
+  console.log('output is')
+  console.log(output)
   return output;
   //-----/WIP-----
 
 }
-//-----WIP-----
 let temp
 let string = "123"
 function separateWords(input){
@@ -141,20 +126,23 @@ function separateWords(input){
       presWord++
       output[presWord] = input.charAt(i);
       presWord++
+    }else if(input.charAt(i) === "/"){
+      presWord++
+      output[presWord] = input.charAt(i);
+    }else if(input.charAt(i) === "`"){
+      output[presWord] = input.charAt(i);
+      presWord++
     }else{
       output[presWord] += input.charAt(i);
     }
   }
-
-
-  // console.log(output)
+  console.log(`words are`)
+  console.log(output)
   return output
 }
 // separateWords("one\ntwo three")
 
 function findMatch(input, type){
-  // log(`finding match for ${input}`)
-  // temp = input;
   if(input === undefined){input = "DEFAULT";log(`input of findMatch is undefined`)}
   if(type == "k-e" || type == undefined){
     //if kaiyako to english
@@ -163,7 +151,12 @@ function findMatch(input, type){
       count();
       if(input === wordCode[i][0]){
         hasMatch = true;
-        return [wordCode[i][0], wordCode[i][1], wordCode[i][2], i]
+        if(wordCode[i][2] === undefined){
+          return [wordCode[i][0], wordCode[i][1], "word", i]
+        }else{
+          return [wordCode[i][0], wordCode[i][1], wordCode[i][2], i]
+        }
+
       }
     }
     if(hasMatch == false){
@@ -171,14 +164,11 @@ function findMatch(input, type){
     }
   }
 }
-//-----/WIP-----
 
 function decodeWord(input, type){
   if(input === undefined){input = "DEFAULT";log(`input of decodeWord is undefined`)}
   let output = "";
-  say(`decoding '${input}'`)
   if(input === " "){
-    say(`output is '${output}'`)
     return "";
   }
   if(type == "k-e" || type == undefined){
@@ -201,8 +191,6 @@ function decodeWord(input, type){
   return output;
 }
 function printToPage(input){
-  log(`Tying to print`, "t")
-  log(input, "s")
   let output = "";
   for(let i=0; i<input.length; i++){
     // console.info(`printing ${input[i][0]}`)
@@ -215,7 +203,6 @@ function printToPage(input){
     }
 
   }
-  say(output)
   $("#output").empty();
   $("#output").html(output);
 }
