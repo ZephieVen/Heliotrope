@@ -43,10 +43,9 @@ function count(){
 }
 let decodeToggler = true;
 
+
+
 window.onload = function(){
-  //
-  // $("#input").append("qwer\ntyui ")
-  //
   decodeToggler = document.getElementById("decode-toggler").checked;
   textAreaInput = $("#input").val();
   hasChanged();
@@ -56,6 +55,21 @@ window.onload = function(){
       decode("eocf jz n. mpc;");
     }
   }
+
+  //-----LOCAL STORAGE-----
+  //-----WIP-----
+  if(JSON.parse(localStorage.getItem("localChecklist")) === null){
+    console.log("creating new local storage");
+    window.localStorage.setItem("localChecklist", JSON.stringify(textAreaInput));
+  }else{
+    textAreaInput = JSON.parse(localStorage.getItem("localChecklist"));
+    $("#input").val(textAreaInput);
+  }
+  //-----WIP-----
+}
+
+function saveToLocal(){
+  window.localStorage.setItem("textArea", JSON.stringify(textAreaInput));
 }
 
 function loop(){
@@ -72,6 +86,8 @@ function hasChanged(){
   lastChar = textAreaInput.charAt(textAreaInput.length - 1);
   if(document.getElementById("decode-toggler").checked){
     printToPage(decode($("#input").val()));
+  }else{
+    printToPage("");
   }
 }
 
@@ -90,7 +106,7 @@ function decode(input){
     }else if(words[i] === "/"){
       output.push([words[i], "."]);
     }else if(words[i] === "`"){
-      output.push([words[i], "&emsp;"])
+      output.push([words[i], "&emsp;&emsp;"])
       console.log(output[output.length-1])
     }else{
       let myWord = findMatch(words[i]);
@@ -104,8 +120,6 @@ function decode(input){
     }
   }
 
-  console.log('output is')
-  console.log(output)
   return output;
   //-----/WIP-----
 
@@ -136,8 +150,6 @@ function separateWords(input){
       output[presWord] += input.charAt(i);
     }
   }
-  console.log(`words are`)
-  console.log(output)
   return output
 }
 // separateWords("one\ntwo three")

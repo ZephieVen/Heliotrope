@@ -3,23 +3,45 @@
   src: url('../Kaiyako05-Regular.otf'); /*URL to font*/
 }
 @font-face{
-  font-family: 'kaiyako3'; /*a name to be used later*/
+  font-family: 'kaiyako6'; /*a name to be used later*/
   src: url('../Kaiyako06.otf'); /*URL to font*/
 }
 
 $purple: #6133ac;
 
+.kaiyako{
+  font-family: "kaiyako6";
+}
+
 body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: $purple;
   text-align: center;
   color: white;
 }
+header{
+  width: 80%;
+  .subheader{
+    display: flex;
+    justify-content: space-around;
+  }
+}
+h1{
+  font-family: "kaiyako6";
+}
+button{
+  background-color: #000;
+}
 main{
+  width: 800px;
   textarea{
-    font-family: "kaiyako3", fantasy;
+    font-family: "kaiyako6", fantasy;
     background-color: #000;
     width: 95%;
     max-width: 95%;
+    min-height: 500px;
   }
 }
 .right{
@@ -44,6 +66,13 @@ main{
   }
   .noun{
     background-color: #55e;
+  }
+  .adjective{
+    background-color: #e59;
+  }
+  .verb{
+    background-color: #eb4;
+    color: $purple;
   }
   .word{
     background-color: #86a;

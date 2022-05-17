@@ -5,22 +5,49 @@
   /*URL to font*/
 }
 @font-face {
-  font-family: "kaiyako3";
+  font-family: "kaiyako6";
   /*a name to be used later*/
   src: url("../Kaiyako06.otf");
   /*URL to font*/
 }
+.kaiyako {
+  font-family: "kaiyako6";
+}
+
 body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #6133ac;
   text-align: center;
   color: white;
 }
 
+header {
+  width: 80%;
+}
+header .subheader {
+  display: flex;
+  justify-content: space-around;
+}
+
+h1 {
+  font-family: "kaiyako6";
+}
+
+button {
+  background-color: #000;
+}
+
+main {
+  width: 800px;
+}
 main textarea {
-  font-family: "kaiyako3", fantasy;
+  font-family: "kaiyako6", fantasy;
   background-color: #000;
   width: 95%;
   max-width: 95%;
+  min-height: 500px;
 }
 
 .right {
@@ -45,6 +72,13 @@ main textarea {
 }
 #output .noun {
   background-color: #55e;
+}
+#output .adjective {
+  background-color: #e59;
+}
+#output .verb {
+  background-color: #eb4;
+  color: #6133ac;
 }
 #output .word {
   background-color: #86a;
